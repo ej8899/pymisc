@@ -8,5 +8,5 @@ initial setup of repo,
 01-hello.py - hello python world - basics of output  
 02-groceries.py - variable basics  
 03-helloname.py - getting basic input
-04-area_calculator.py - input and variables and output
+04-area_calculator.py - data types (int and str)
 
