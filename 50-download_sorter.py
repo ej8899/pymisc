@@ -59,5 +59,6 @@ if __name__ == "__main__":
   else:
     print("File sorting preview (no files have been moved).")
 
+  print("\nTarget Folder\t\t\t\tFileCount")
   for target_folder, count in move_counts.items():
-    print(f"{count} file(s) moved to {target_folder}")
+    print(f"{target_folder}\t{count}")
