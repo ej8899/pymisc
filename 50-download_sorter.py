@@ -96,11 +96,23 @@ def colorize_text(text,color):
 
     return f"{COLOR_UNIT}{text}{RESET_COLOR}"
 
+
+#
+# returns 'darwin' for macos, 'linux' or 'win32'
+# pass required to be any ONE of the above if it is required for this app
+def osCheck(required):
+    current_os = sys.platform
+    if required and current_os != required:
+        print(f"Required OS is {required}, but the current OS is {current_os}. Exiting.")
+        sys.exit(1)
+    return current_os
+
+
 #
 # main application:
 
 if __name__ == "__main__":
-    if sys.platform != 'darwin':
+    if osCheck() != 'darwin':
         print(colorize_text("This script is intended to run on macOS only.","red"))
         sys.exit(1)
 
