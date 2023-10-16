@@ -20,6 +20,7 @@ debugOutput = False;
 
 # Define your Downloads folder path and target folder paths
 download_folder = "/Users/erniejohnson/Downloads"
+unsorted_folder = "/Users/erniejohnson/Downloads/UnknownFiles"
 target_folders = {
     ".pdf": "/Users/erniejohnson/Downloads/Documents",
     ".jpg": "/Users/erniejohnson/Downloads/Images",
@@ -45,7 +46,7 @@ def sort_files(move_files=False):
           print ("ROOT:",root)
 
         if root != download_folder:
-            skipped_folders +=1
+            skipped_folders +=1 # TODO this counter isn't working properly
             continue  # Skip subdirectories
 
         for filename in files:
@@ -69,6 +70,8 @@ def sort_files(move_files=False):
                     print(f"Moved {source_path} to {target_path}")
                 else:
                     print(f"Will move {source_path} to {target_path}")
+            else:
+                print(f"MOVING {source_path} TO {unsorted_folder}")
 
     return move_counts, skipped_folders
 
