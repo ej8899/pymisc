@@ -71,7 +71,7 @@ def sort_files(move_files=False):
                 else:
                     print(f"Will move {source_path} to {target_path}")
             else:
-                print(f"MOVING {source_path} TO {unsorted_folder}")
+                print(f"MOVING {source_path} TO {unsorted_folder}") # TODO - build this section out
 
     return move_counts, skipped_folders
 
