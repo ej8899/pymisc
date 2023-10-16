@@ -25,6 +25,7 @@ download_folder = "/Users/erniejohnson/Downloads"
 unsorted_folder = "/Users/erniejohnson/Downloads/UnknownFiles"
 target_folders = {
     ".pdf": "/Users/erniejohnson/Downloads/Documents",
+    ".pdfx": "/Users/erniejohnson/Downloads/Documents",
     ".jpg": "/Users/erniejohnson/Downloads/Images",
     ".png": "/Users/erniejohnson/Downloads/Images",
     ".mp4": "/Users/erniejohnson/Downloads/Videos",
@@ -42,6 +43,7 @@ def should_move(source_path, target_path):
 def sort_files(move_files=False):
     move_counts = {target: 0 for target in target_folders.values()}
     skipped_folders = 0;
+    unrecognized_extensions = set()
 
     for root, _, files in os.walk(download_folder):
         if debugOutput:
@@ -74,10 +76,11 @@ def sort_files(move_files=False):
                   else:
                       print(f"Will move {source_path} to {target_path}")
             else:
+                unrecognized_extensions.add(extension)
                 if args.verbose:
                   print(f"MOVING {source_path} TO {unsorted_folder}") # TODO - build this section out
 
-    return move_counts, skipped_folders
+    return move_counts, skipped_folders, unrecognized_extensions
 
 
 def colorize_text(text,color):
@@ -136,7 +139,7 @@ if __name__ == "__main__":
       debugOutput = args.debug
 
     print("Sorting files in Downloads folder...")
-    move_counts, skipped_files = sort_files(move_files=args.move)
+    move_counts, skipped_files, unrecognized_extensions = sort_files(move_files=args.move)
 
     print("")
     if args.move:
@@ -150,5 +153,13 @@ if __name__ == "__main__":
     for target_folder, count in move_counts.items():
       counter_text = colorize_text(count,'red')
       print(f"{target_folder}\t{counter_text}")
+
+    if unrecognized_extensions:
+        print("\nUnrecognized Extensions:")
+        extensions_list = list(unrecognized_extensions)
+        for i in range(0, len(extensions_list), 5):
+            extensions_chunk = extensions_list[i:i + 5]
+            print(" | ".join(extensions_chunk))
+
 
     print(f"\nSkipped files: {skipped_files}")
