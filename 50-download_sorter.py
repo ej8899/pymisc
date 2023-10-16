@@ -69,6 +69,11 @@ def sort_files(move_files=False):
 
     return move_counts, skipped_folders
 
+
+
+#
+# main application:
+
 if __name__ == "__main__":
   parser = argparse.ArgumentParser(description="Sort files in the Downloads folder.")
   parser.add_argument("-move", action="store_true", help="Move the files (default is to only show what will be moved)")
