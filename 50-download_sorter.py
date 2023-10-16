@@ -23,6 +23,7 @@ download_folder = "/Users/erniejohnson/Downloads"
 target_folders = {
     ".pdf": "/Users/erniejohnson/Downloads/Documents",
     ".jpg": "/Users/erniejohnson/Downloads/Images",
+    ".png": "/Users/erniejohnson/Downloads/Images",
     ".mp4": "/Users/erniejohnson/Downloads/Videos",
     ".zip": "/Users/erniejohnson/Downloads/ZipFiles",
     ".dmg": "/Users/erniejohnson/Downloads/AppFiles",
