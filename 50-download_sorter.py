@@ -70,9 +70,21 @@ def sort_files(move_files=False):
     return move_counts, skipped_folders
 
 
+def colorize_text(text,color):
+  RED_COLOR = "\033[91m"
+  BLUE_COLOR = "\033[94m"
+  RESET_COLOR = "\033[0m"
+
+  if color =='red':
+    COLOR_UNIT = RED_COLOR
+  elif color == 'blue':
+    COLOR_UNIT = BLUE_COLOR
+
+  return f"{COLOR_UNIT}{text}{RESET_COLOR}"
 
 #
 # main application:
+
 
 if __name__ == "__main__":
   parser = argparse.ArgumentParser(description="Sort files in the Downloads folder.")
@@ -101,5 +113,7 @@ if __name__ == "__main__":
 
   print("\nTarget Folder\t\t\t\tFileCount")
   for target_folder, count in move_counts.items():
-    print(f"{target_folder}\t{count}")
+    counter_text = colorize_text(count,'red')
+    print(f"{target_folder}\t{counter_text}")
+
   print(f"\nSkipped files: {skipped_files}")
