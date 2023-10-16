@@ -17,6 +17,8 @@ import sys
 
 debugOutput = False;
 
+# cross platform 'clear' screen
+os.system('cls' if os.name == 'nt' else 'clear')
 
 # Define your Downloads folder path and target folder paths
 download_folder = "/Users/erniejohnson/Downloads"
@@ -66,11 +68,13 @@ def sort_files(move_files=False):
                 else:
                     move_counts[target_folder] += 1
 
-                if move_files:
-                    print(f"Moved {source_path} to {target_path}")
-                else:
-                    print(f"Will move {source_path} to {target_path}")
+                if args.verbose:
+                  if move_files:
+                      print(f"Moved {source_path} to {target_path}")
+                  else:
+                      print(f"Will move {source_path} to {target_path}")
             else:
+              if args.verbose:
                 print(f"MOVING {source_path} TO {unsorted_folder}") # TODO - build this section out
 
     return move_counts, skipped_folders
@@ -100,6 +104,7 @@ if __name__ == "__main__":
   parser.add_argument("-move", action="store_true", help="Move the files (default is to only show what will be moved)")
   parser.add_argument("-about", action="store_true", help="About the app, version and developer info.")
   parser.add_argument("-debug", action="store_true", help="Force debut output to ON.")
+  parser.add_argument("-verbose", action="store_true", help="Show a full log of what is moved and skipped.")
 
   args = parser.parse_args()
 
@@ -121,7 +126,9 @@ if __name__ == "__main__":
   else:
     print("File sorting preview (no files have been moved).")
 
-  print("\nTarget Folder\t\t\t\tFileCount")
+  targetText=colorize_text("Target Folder",'blue');
+  countText=colorize_text("File Count","blue");
+  print(f"\n{targetText}\t\t\t\t{countText}")
   for target_folder, count in move_counts.items():
     counter_text = colorize_text(count,'red')
     print(f"{target_folder}\t{counter_text}")
