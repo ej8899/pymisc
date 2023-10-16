@@ -5,9 +5,9 @@
 # 3) run with -h for a list of options
 #
 
-devName = "ErnieJohnson.ca"
-appVersion = "1.0.0"
-appName = "MoveThis!"
+devName     = "ErnieJohnson.ca"
+appVersion  = "1.0.0"
+appName     = "MoveThis!"
 
 
 import os
@@ -48,7 +48,7 @@ def sort_files(move_files=False):
           print ("ROOT:",root)
 
         if root != download_folder:
-            skipped_folders +=1 # TODO this counter isn't working properly
+            skipped_folders +=1 # TODO this counter (maybe) isn't working properly
             continue  # Skip subdirectories
 
         for filename in files:
@@ -74,63 +74,68 @@ def sort_files(move_files=False):
                   else:
                       print(f"Will move {source_path} to {target_path}")
             else:
-              if args.verbose:
-                print(f"MOVING {source_path} TO {unsorted_folder}") # TODO - build this section out
+                if args.verbose:
+                  print(f"MOVING {source_path} TO {unsorted_folder}") # TODO - build this section out
 
     return move_counts, skipped_folders
 
 
 def colorize_text(text,color):
-  RED_COLOR = "\033[91m"
-  BLUE_COLOR = "\033[36m"
-  RESET_COLOR = "\033[0m"
+    RED = "\033[91m"
+    BLUE = "\033[36m"
+    YELLOW = "\033[93m"
 
-  if color =='red':
-    COLOR_UNIT = RED_COLOR
-  elif color == 'blue':
-    COLOR_UNIT = BLUE_COLOR
+    RESET_COLOR = "\033[0m"
 
-  return f"{COLOR_UNIT}{text}{RESET_COLOR}"
+    if color =='red':
+      COLOR_UNIT = RED
+    elif color == 'blue':
+      COLOR_UNIT = BLUE
+    elif color == 'yellow':
+      COLOR_UNIT = YELLOW
+
+    return f"{COLOR_UNIT}{text}{RESET_COLOR}"
 
 #
 # main application:
 
-if sys.platform != 'darwin':
-    print(colorize_text("This script is intended to run on macOS only.","red"))
-    sys.exit(1)
-
 if __name__ == "__main__":
-  parser = argparse.ArgumentParser(description="Sort files in the Downloads folder.")
-  parser.add_argument("-move", action="store_true", help="Move the files (default is to only show what will be moved)")
-  parser.add_argument("-about", action="store_true", help="About the app, version and developer info.")
-  parser.add_argument("-debug", action="store_true", help="Force debut output to ON.")
-  parser.add_argument("-verbose", action="store_true", help="Show a full log of what is moved and skipped.")
+    if sys.platform != 'darwin':
+        print(colorize_text("This script is intended to run on macOS only.","red"))
+        sys.exit(1)
 
-  args = parser.parse_args()
+    parser = argparse.ArgumentParser(description="Sort files in the Downloads folder.")
+    parser.add_argument("-move", action="store_true", help="Move the files (default is to only show what will be moved)")
+    parser.add_argument("-about", action="store_true", help="About the app, version and developer info.")
+    parser.add_argument("-debug", action="store_true", help="Force debut output to ON.")
+    parser.add_argument("-verbose", action="store_true", help="Show a full log of what is moved and skipped.")
 
-  if args.about:
-    appNameColored = colorize_text(appName,'blue')
-    print (f"{appNameColored} - v{appVersion}")
-    print (f"written by: {devName}")
-    exit()
+    args = parser.parse_args()
 
-  if args.debug:
-    debugOutput = args.debug
+    if args.about:
+      appNameColored = colorize_text(appName,'blue')
+      appVerColored = colorize_text("v"+appVersion, 'yellow')
+      print (f"{appNameColored} - {appVerColored}")
+      print (f"written by: {devName}")
+      exit()
 
-  print("Sorting files in Downloads folder...")
-  move_counts, skipped_files = sort_files(move_files=args.move)
+    if args.debug:
+      debugOutput = args.debug
 
-  print("")
-  if args.move:
-    print("File sorting complete (files have been moved).")
-  else:
-    print("File sorting preview (no files have been moved).")
+    print("Sorting files in Downloads folder...")
+    move_counts, skipped_files = sort_files(move_files=args.move)
 
-  targetText=colorize_text("Target Folder",'blue');
-  countText=colorize_text("File Count","blue");
-  print(f"\n{targetText}\t\t\t\t{countText}")
-  for target_folder, count in move_counts.items():
-    counter_text = colorize_text(count,'red')
-    print(f"{target_folder}\t{counter_text}")
+    print("")
+    if args.move:
+      print(colorize_text("File sorting complete (files have been moved).","red"))
+    else:
+      print(colorize_text("File sorting preview (no files have been moved).","yellow"))
 
-  print(f"\nSkipped files: {skipped_files}")
+    targetText=colorize_text("Target Folder",'blue');
+    countText=colorize_text("File Count","blue");
+    print(f"\n{targetText}\t\t\t\t{countText}")
+    for target_folder, count in move_counts.items():
+      counter_text = colorize_text(count,'red')
+      print(f"{target_folder}\t{counter_text}")
+
+    print(f"\nSkipped files: {skipped_files}")
