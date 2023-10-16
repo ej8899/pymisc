@@ -72,7 +72,7 @@ def sort_files(move_files=False):
 
 def colorize_text(text,color):
   RED_COLOR = "\033[91m"
-  BLUE_COLOR = "\033[94m"
+  BLUE_COLOR = "\033[36m"
   RESET_COLOR = "\033[0m"
 
   if color =='red':
@@ -95,7 +95,8 @@ if __name__ == "__main__":
   args = parser.parse_args()
 
   if args.about:
-    print (f"{appName} - v{appVersion}")
+    appNameColored = colorize_text(appName,'blue')
+    print (f"{appNameColored} - v{appVersion}")
     print (f"written by: {devName}")
     exit()
 
