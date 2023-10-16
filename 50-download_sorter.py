@@ -1,8 +1,20 @@
+#
+# sort your downloads folder:
+# 1) skips any existing folders
+# 2) defaults to 'save mode' - no files will move - only shows what "would move"
+# 3) run with -move argument to make it live and actually move files
+#
+#
+
+devName = "ErnieJohnson.ca"
+appVersion = "1.0.0"
+
+
 import os
 import shutil
 import argparse
 
-debugOutput = True;
+debugOutput = False;
 
 # Define your Downloads folder path and target folder paths
 download_folder = "/Users/erniejohnson/Downloads"
@@ -23,12 +35,14 @@ def should_move(source_path, target_path):
 
 def sort_files(move_files=False):
     move_counts = {target: 0 for target in target_folders.values()}
+    skipped_folders = 0;
 
     for root, _, files in os.walk(download_folder):
         if debugOutput:
           print ("ROOT:",root)
-          
+
         if root != download_folder:
+            skipped_folders +=1
             continue  # Skip subdirectories
 
         for filename in files:
@@ -53,16 +67,20 @@ def sort_files(move_files=False):
                 else:
                     print(f"Will move {source_path} to {target_path}")
 
-    return move_counts
+    return move_counts, skipped_folders
 
 if __name__ == "__main__":
   parser = argparse.ArgumentParser(description="Sort files in the Downloads folder.")
-  parser.add_argument("-move", action="store_true", help="Move the files (default is to show what will be moved)")
+  parser.add_argument("-move", action="store_true", help="Move the files (default is to only show what will be moved)")
+  parser.add_argument("-about", action="store_true", help="About the app, version and developer info.")
+  parser.add_argument("-debug", action="store_true", help="Force debut output to ON.")
 
   args = parser.parse_args()
+  if args.debug:
+    debugOutput = args.debug
 
   print("Sorting files in Downloads folder...")
-  move_counts = sort_files(move_files=args.move)
+  move_counts, skipped_files = sort_files(move_files=args.move)
 
   print("")
   if args.move:
@@ -73,3 +91,4 @@ if __name__ == "__main__":
   print("\nTarget Folder\t\t\t\tFileCount")
   for target_folder, count in move_counts.items():
     print(f"{target_folder}\t{count}")
+  print(f"\nSkipped files: {skipped_files}")
