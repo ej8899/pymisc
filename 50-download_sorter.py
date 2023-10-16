@@ -2,6 +2,8 @@ import os
 import shutil
 import argparse
 
+debugOutput = True;
+
 # Define your Downloads folder path and target folder paths
 download_folder = "/Users/erniejohnson/Downloads"
 target_folders = {
@@ -16,33 +18,42 @@ def ensure_folder_exists(folder_path):
   if not os.path.exists(folder_path):
     os.makedirs(folder_path)
 
+def should_move(source_path, target_path):
+  return not os.path.exists(target_path)
+
 def sort_files(move_files=False):
-  move_counts = {target: 0 for target in target_folders.values()}
+    move_counts = {target: 0 for target in target_folders.values()}
 
-  for root, _, files in os.walk(download_folder):
-    for filename in files:
-      source_path = os.path.join(root, filename)
-      _, extension = os.path.splitext(filename)
+    for root, _, files in os.walk(download_folder):
+        if debugOutput:
+          print ("ROOT:",root)
+          
+        if root != download_folder:
+            continue  # Skip subdirectories
 
-      # Check if a target folder exists for the extension
-      target_folder = target_folders.get(extension, None)
+        for filename in files:
+            source_path = os.path.join(root, filename)
+            _, extension = os.path.splitext(filename)
 
-      if target_folder:
-        ensure_folder_exists(target_folder)  # Create the target folder if it doesn't exist
-        target_path = os.path.join(target_folder, filename)
+            # Check if a target folder exists for the extension
+            target_folder = target_folders.get(extension, None)
 
-        if move_files:
-          shutil.move(source_path, target_path)
-          move_counts[target_folder] += 1
-        else:
-          move_counts[target_folder] += 1
+            if target_folder:
+                ensure_folder_exists(target_folder)  # Create the target folder if it doesn't exist
+                target_path = os.path.join(target_folder, filename)
 
-        if move_files:
-          print(f"Moved {source_path} to {target_path}")
-        else:
-          print(f"Will move {source_path} to {target_path}")
+                if should_move(source_path, target_path) and move_files:
+                    shutil.move(source_path, target_path)
+                    move_counts[target_folder] += 1
+                else:
+                    move_counts[target_folder] += 1
 
-  return move_counts
+                if move_files:
+                    print(f"Moved {source_path} to {target_path}")
+                else:
+                    print(f"Will move {source_path} to {target_path}")
+
+    return move_counts
 
 if __name__ == "__main__":
   parser = argparse.ArgumentParser(description="Sort files in the Downloads folder.")
