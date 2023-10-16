@@ -1,13 +1,13 @@
 #
-# sort your downloads folder:
+# Sort your downloads folder!
 # 1) skips any existing folders
-# 2) defaults to 'save mode' - no files will move - only shows what "would move"
-# 3) run with -move argument to make it live and actually move files
-#
+# 2) defaults to 'safe mode' - no files will move - only shows what "would move"
+# 3) run with -h for a list of options
 #
 
 devName = "ErnieJohnson.ca"
 appVersion = "1.0.0"
+appName = "MoveThis!"
 
 
 import os
@@ -81,6 +81,12 @@ if __name__ == "__main__":
   parser.add_argument("-debug", action="store_true", help="Force debut output to ON.")
 
   args = parser.parse_args()
+
+  if args.about:
+    print (f"{appName} - v{appVersion}")
+    print (f"written by: {devName}")
+    exit()
+
   if args.debug:
     debugOutput = args.debug
 
