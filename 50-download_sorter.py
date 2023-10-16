@@ -13,8 +13,10 @@ appName = "MoveThis!"
 import os
 import shutil
 import argparse
+import sys
 
 debugOutput = False;
+
 
 # Define your Downloads folder path and target folder paths
 download_folder = "/Users/erniejohnson/Downloads"
@@ -85,6 +87,9 @@ def colorize_text(text,color):
 #
 # main application:
 
+if sys.platform != 'darwin':
+    print(colorize_text("This script is intended to run on macOS only.","red"))
+    sys.exit(1)
 
 if __name__ == "__main__":
   parser = argparse.ArgumentParser(description="Sort files in the Downloads folder.")
