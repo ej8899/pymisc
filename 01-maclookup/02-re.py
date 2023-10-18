@@ -3,6 +3,8 @@ import requests
 import re
 from time import sleep
 
+# https://www.youtube.com/watch?v=htoDMdVzJGw
+
 command = 'arp -a'
 response = subprocess.check_output(command, shell=True)
 #print (response)
